@@ -25,7 +25,20 @@ When the working set is cached it performs like an in-memory system; when it is 
 | --------------------------------- | --------------------------------------------------------------------------------- |
 | **Object-storage-native LSM WAL** | Infinite, cheap, 11 x durability; no replication of SSDs required.                |
 | **Write-through NVMe/RAM cache**  | Warm queries in ≈ 10-20 ms while keeping operating cost low.                      |
-| **Centroid-based ANN (SPFresh)**  | Minimises round-trips on cold reads and supports incremental in-place updates.    |
+| **Centroid-based ANN** | Minimises round-trips on cold reads and supports incremental in-place updates. |
 | **Compute/compute separation**    | Query nodes stay lightweight; heavy index builds run on ephemeral “indexer” pods. |
 | **Multi-tenant by prefix**        | Millions of namespaces, each independently cached / evicted.                      |
 
+
+## Components
+Detailed documentation for each subsystem lives under the [`docs/`](./docs) directory:
+
+- [Write-Ahead Log](docs/wal/README.md)
+- [SSTables](docs/sstable/README.md)
+- [ANN blocks](docs/ann-block/README.md)
+- [Compaction service](docs/compaction/README.md)
+- [Caching tiers](docs/caching/README.md)
+- [Query executor](docs/query-executor/README.md)
+- [BM25 scoring](docs/bm25/README.md)
+- [Consistency model](docs/consistency/README.md)
+- [Transactions](docs/transactions/README.md)

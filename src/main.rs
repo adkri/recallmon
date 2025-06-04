@@ -1,13 +1,14 @@
-use recallmon::{run_server, api::AppState, wal::WalAppender};
-use std::sync::Arc;
-use aws_sdk_s3::Client;
 use anyhow::Result;
+use aws_config::BehaviorVersion;
+use aws_sdk_s3::Client;
+use recallmon::{api::AppState, run_server, wal::WalAppender};
+use std::sync::Arc;
 
 #[tokio::main]
 async fn main() -> Result<()> {
     tracing_subscriber::fmt::init();
 
-    let config = aws_config::load_from_env().await;
+    let config = aws_config::defaults(BehaviorVersion::latest()).load().await;
     let client = Client::new(&config);
     let wal = WalAppender {
         bucket: std::env::var("RECALLMON_BUCKET").unwrap_or_else(|_| "recallmon".into()),

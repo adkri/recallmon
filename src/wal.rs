@@ -1,6 +1,6 @@
-use aws_sdk_s3::{Client, types::ByteStream};
-use anyhow::Result;
 use crate::models::VectorRecord;
+use anyhow::Result;
+use aws_sdk_s3::{primitives::ByteStream, Client};
 
 #[derive(Clone)]
 pub struct WalAppender {

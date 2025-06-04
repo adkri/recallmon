@@ -4,6 +4,7 @@ use axum::extract::State;
 use std::sync::Arc;
 use crate::wal::WalAppender;
 use crate::models::VectorRecord;
+use anyhow::Result;
 
 #[derive(Clone)]
 pub struct AppState {
@@ -16,12 +17,12 @@ pub fn app(state: AppState) -> Router {
         .with_state(state)
 }
 
-pub async fn run_server(addr: std::net::SocketAddr, state: AppState) {
+pub async fn run_server(addr: std::net::SocketAddr, state: AppState) -> Result<()> {
     let app = app(state);
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
-        .await
-        .expect("server failed");
+        .await?;
+    Ok(())
 }
 
 async fn put_document(State(state): State<AppState>,

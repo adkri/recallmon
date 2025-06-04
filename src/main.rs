@@ -1,9 +1,10 @@
 use recallmon::{run_server, api::AppState, wal::WalAppender};
 use std::sync::Arc;
 use aws_sdk_s3::Client;
+use anyhow::Result;
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<()> {
     tracing_subscriber::fmt::init();
 
     let config = aws_config::load_from_env().await;
@@ -14,6 +15,7 @@ async fn main() {
     };
 
     let state = AppState { wal: Arc::new(wal) };
-    let addr = "0.0.0.0:3000".parse().unwrap();
-    run_server(addr, state).await;
+    let addr = "0.0.0.0:3000".parse()?;
+    run_server(addr, state).await?;
+    Ok(())
 }
